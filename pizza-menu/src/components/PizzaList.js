@@ -6,8 +6,11 @@ export default function PizzaList() {
     const data = pizzaData
 
     return (
-        data.map(pizza => (
-         <Pizza item={pizza} key={pizza.name}/>
-        ))
+        <ul className='pizzas'>
+           { data.map(pizza => (
+                <Pizza item={pizza} key={pizza.name}/>
+            ))}
+        </ul>
+
     )
 };
