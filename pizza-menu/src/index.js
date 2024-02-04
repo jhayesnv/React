@@ -1,21 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
+import Header from './components/Header';
+import Menu from './components/Menu';
+import Footer from './components/Footer';
+import './index.css';
 
 function App() {
     return (
-        <div>
-            <Pizza />
-        </div>
-    )
-}
-
-function Pizza() {
-    return (
-        <div>
-            <img src='pizzas/spinaci.jpg' alt='pizza spinaci'/>
-            <h2>Pizza Spinaci</h2>
-            <p>Tomato, mozzarella, spinach and ricotta cheese</p>
+        <div className='container'>
+            <Header/>
+            <Menu/>
+            <Footer/>
         </div>
     )
 }
