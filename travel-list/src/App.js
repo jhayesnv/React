@@ -1,21 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './index.css';
 import Logo from './components/Logo';
 import Form from './components/Form';
 import PackingList from './components/PackingList';
 import Stats from './components/Stats';
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <Logo/>
-        <Form/>
-        <PackingList/>
-        <Stats/>
-      </div>
-    );
-  }
-}
+export default function App() {
+  const [items, setItems] = useState([]);
 
-export default App;
+  return (
+    <div className='app'>
+      <Logo/>
+      <Form items={items} setItems={setItems}/>
+      <PackingList items={items}/>
+      <Stats/>
+    </div>
+  );
+}
