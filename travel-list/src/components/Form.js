@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Form({items, setItems}) {
+export default function Form({handleAddItems}) {
     const [description, setDescription] = useState('');
     const [count, setCount] = useState(1);
 
@@ -8,10 +8,6 @@ export default function Form({items, setItems}) {
         let optionList = Array.from({length: 20}, (_, i) => i + 1).map(num => <option value={num} key={num}>{num}</option>)
         return optionList;
     };
-
-    function handleAddItems(item) {
-        setItems((items) => [...items, item])
-    }
 
     function handleSubmit(e) {
         e.preventDefault();
