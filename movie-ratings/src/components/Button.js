@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
-function Button() {
+function Button({setIsOpen, children}) {
   return (
-    <div>Button</div>
-  )
+    <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
+      {children}
+    </button>
+  );
 }
 
-export default Button
+export default Button;
