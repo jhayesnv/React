@@ -1,7 +1,15 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from "react";
 import { useState } from "react";
-import NavBar from './components/NavBar';
-import Main from './components/Main';
+import NavBar from "./components/NavBar";
+import Search from "./components/Search";
+import Logo from "./components/Logo";
+import NumResults from "./components/NumResults";
+import Main from "./components/Main";
+import ListBox from "./components/ListBox";
+import WatchedBox from "./components/WatchedBox";
+import MovieList from "./components/MovieList";
+import Summary from "./components/Summary";
+import WatchedList from "./components/WatchedList";
 
 const tempMovieData = [
   {
@@ -51,14 +59,40 @@ const tempWatchedData = [
 ];
 
 export default function App() {
-
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
 
+  const [isOpen1, setIsOpen1] = useState(true);
+  const [isOpen2, setIsOpen2] = useState(true);
+
+  const average = (arr) =>
+    arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+
+  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watched.map((movie) => movie.userRating));
+  const avgRuntime = average(watched.map((movie) => movie.runtime));
+
   return (
     <Fragment>
-      <NavBar movies={movies} watched={watched}/>
-      <Main movies={movies} watched={watched} />
+      <NavBar movies={movies} watched={watched}>
+        <Logo />
+        <Search />
+        <NumResults movies={movies} />
+      </NavBar>
+      <Main movies={movies} watched={watched}>
+        <ListBox setIsOpen1={setIsOpen1} isOpen1={isOpen1}>
+          <MovieList movies={movies} />
+        </ListBox>
+        <WatchedBox setIsOpen2={setIsOpen2} isOpen2={isOpen2}>
+          <Summary
+            watched={watched}
+            avgImdbRating={avgImdbRating}
+            avgUserRating={avgUserRating}
+            avgRuntime={avgRuntime}
+          />
+          <WatchedList watched={watched} />
+        </WatchedBox>
+      </Main>
     </Fragment>
   );
 }

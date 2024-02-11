@@ -1,14 +1,10 @@
-import React, { useState } from "react";
-import Search from "./Search";
-import Logo from "./Logo";
-import NumResults from "./NumResults";
+import React from "react";
 
-export default function NavBar({ movies }) {
+
+export default function NavBar({ children }) {
   return (
     <nav className="nav-bar">
-      <Logo />
-      <Search />
-      <NumResults movies={movies} />
+      {children}
     </nav>
   );
 }

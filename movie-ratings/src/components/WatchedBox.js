@@ -1,14 +1,9 @@
-import React, { Fragment } from "react";
-import Summary from "./Summary";
-import WatchedList from "./WatchedList";
+import React from "react";
 
 function WatchedBox({
   setIsOpen2,
   isOpen2,
-  watched,
-  avgImdbRating,
-  avgUserRating,
-  avgRuntime,
+  children
 }) {
   return (
     <div className="box">
@@ -19,15 +14,7 @@ function WatchedBox({
         {isOpen2 ? "–" : "+"}
       </button>
       {isOpen2 && (
-        <Fragment>
-          <Summary
-            watched={watched}
-            avgImdbRating={avgImdbRating}
-            avgUserRating={avgUserRating}
-            avgRuntime={avgRuntime}
-          />
-          <WatchedList watched={watched} />
-        </Fragment>
+          children
       )}
     </div>
   );

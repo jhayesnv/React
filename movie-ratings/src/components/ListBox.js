@@ -1,7 +1,6 @@
 import React from "react";
-import MovieList from "./MovieList";
 
-export default function ListBox({setIsOpen1, isOpen1, movies}) {
+export default function ListBox({setIsOpen1, isOpen1, children}) {
   return (
     <div className="box">
       <button
@@ -11,7 +10,7 @@ export default function ListBox({setIsOpen1, isOpen1, movies}) {
         {isOpen1 ? "–" : "+"}
       </button>
       {isOpen1 && (
-        <MovieList movies={movies} />
+        children
       )}
     </div>
   );
