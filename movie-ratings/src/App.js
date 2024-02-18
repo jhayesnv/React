@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
 import NavBar from "./components/NavBar";
 import Search from "./components/Search";
@@ -9,6 +9,11 @@ import MovieList from "./components/MovieList";
 import Summary from "./components/Summary";
 import WatchedList from "./components/WatchedList";
 import Box from "./components/Box";
+import Loader from "./components/Loader";
+
+const apiKey = process.env.REACT_APP_API_KEY;
+
+const query = "interstellar";
 
 const tempMovieData = [
   {
@@ -60,6 +65,20 @@ const tempWatchedData = [
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchMovies() {
+      setIsLoading(true);
+      const res = await fetch(
+        `https://www.omdbapi.com/?s=${query}&apikey=${apiKey}`
+      );
+      const data = await res.json();
+      setMovies(data.Search);
+      setIsLoading(false);
+    }
+    fetchMovies();
+  }, []);
 
   const average = (arr) =>
     arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -76,9 +95,7 @@ export default function App() {
         <NumResults movies={movies} />
       </NavBar>
       <Main movies={movies} watched={watched}>
-        <Box>
-          <MovieList movies={movies} />
-        </Box>
+        <Box>{isLoading ? <Loader /> : <MovieList movies={movies} />}</Box>
         <Box>
           <Summary
             watched={watched}
