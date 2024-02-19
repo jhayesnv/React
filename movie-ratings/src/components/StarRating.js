@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from 'prop-types';
 import Star from "./Star";
 
 const containerStyle = {
@@ -11,16 +10,7 @@ const starContainerStyle = {
   display: "flex",
 };
 
-StarRating.propTypes = {
-  maxRating: PropTypes.number,
-  color: PropTypes.string,
-  size: PropTypes.number,
-  className: PropTypes.string
-};
-
-
-function StarRating({ maxRating = 10, color = '#fcc419', size = 48, className = '' }) {
-  const [rating, setRating] = useState(0);
+function StarRating({ maxRating = 10, color = '#fcc419', size = 48, className = '', setRating, userRating}) {
   const [tempRating, setTempRating] = useState(0);
 
   function handleRating(rating) {
@@ -30,6 +20,7 @@ function StarRating({ maxRating = 10, color = '#fcc419', size = 48, className = 
   const textStyle = {
     lineHeight: "1",
     margin: "0",
+    marginLeft: `${1}rem`,
     color,
     fontSize: `${size / 1.5}px`
   };
@@ -41,7 +32,7 @@ function StarRating({ maxRating = 10, color = '#fcc419', size = 48, className = 
           <Star
             key={i}
             onRate={() => handleRating(i + 1)}
-            full={tempRating ? tempRating >= i + 1 : rating >= i + 1}
+            full={tempRating ? tempRating >= i + 1 : userRating >= i + 1}
             onHoverIn={() => setTempRating(i + 1)}
             onHoverOut={() => setTempRating(0)}
             color={color}
@@ -49,7 +40,7 @@ function StarRating({ maxRating = 10, color = '#fcc419', size = 48, className = 
           />
         ))}
       </div>
-      <p style={textStyle}>{tempRating || rating || ""}</p>
+      <p style={textStyle}>{tempRating || userRating || ""}</p>
     </div>
   );
 }

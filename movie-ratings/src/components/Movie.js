@@ -1,8 +1,8 @@
 import React from "react";
 
-function Movie({movie}) {
+function Movie({movie, handleSelectMovie}) {
   return (
-    <li key={movie.imdbID}>
+    <li onClick={() => handleSelectMovie(movie.imdbID)} key={movie.imdbID}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
