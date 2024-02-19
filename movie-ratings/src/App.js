@@ -10,10 +10,9 @@ import Summary from "./components/Summary";
 import WatchedList from "./components/WatchedList";
 import Box from "./components/Box";
 import Loader from "./components/Loader";
+import ErrorMessage from "./components/ErrorMessage";
 
 const apiKey = process.env.REACT_APP_API_KEY;
-
-const query = "interstellar";
 
 const tempMovieData = [
   {
@@ -63,22 +62,54 @@ const tempWatchedData = [
 ];
 
 export default function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function fetchMovies() {
-      setIsLoading(true);
-      const res = await fetch(
-        `https://www.omdbapi.com/?s=${query}&apikey=${apiKey}`
-      );
-      const data = await res.json();
-      setMovies(data.Search);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        setError("");
+
+        const res = await fetch(
+          `https://www.omdbapi.com/?s=${query}&apikey=${apiKey}`
+        );
+
+        if (!res.ok)
+          throw new Error(
+            "Something went wrong while retrieving the movie list"
+          );
+
+        const data = await res.json();
+
+        if (data.Response === "False")
+          throw new Error(
+            `Movies matching the search term "${query}" not found`
+          );
+
+        setMovies(data.Search);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
     }
+
+    if (query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
+
     fetchMovies();
-  }, []);
+  }, [query]);
+
+  const handleSetQuery = (query) => {
+    setQuery(query);
+  };
 
   const average = (arr) =>
     arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -91,11 +122,20 @@ export default function App() {
     <Fragment>
       <NavBar movies={movies} watched={watched}>
         <Logo />
-        <Search />
+        <Search query={query} handleSetQuery={handleSetQuery} />
         <NumResults movies={movies} />
       </NavBar>
       <Main movies={movies} watched={watched}>
-        <Box>{isLoading ? <Loader /> : <MovieList movies={movies} />}</Box>
+        <Box>
+          {isLoading && <Loader />}
+          {!isLoading && !query.length && (
+            <ErrorMessage
+              message={"Type a term in the search bar above to begin!"}
+            />
+          )}
+          {!isLoading && !error && <MovieList movies={movies} />}
+          {error && <ErrorMessage message={error} />}
+        </Box>
         <Box>
           <Summary
             watched={watched}
