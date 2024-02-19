@@ -41,6 +41,16 @@ function MovieDetails({ selectedId, handleCloseMovie, apiKey, handleAddWatchedMo
   }, [selectedId]);
 
 
+  useEffect(() => {
+    if (!title) return;
+    document.title = `Movie | ${title}`;
+
+    return function () {
+      document.title = 'Movie Ratings';
+    }
+  }, [title])
+
+
   const isWatched = watched.map(movie => movie.imdbID).includes(selectedId);
 
   const handleAdd = () => {
