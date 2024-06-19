@@ -1,8 +1,15 @@
-import React from 'react'
+import { Header, Navbar } from "@/components"
+import { Outlet } from "react-router-dom"
 
 function HomeLayout() {
   return (
-    <div>HomeLayout</div>
+    <>
+      <Header />
+      <Navbar />
+      <div className="align-element py-20">
+        <Outlet />
+      </div>
+    </>
   )
 }
 
